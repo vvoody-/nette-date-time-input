@@ -1,27 +1,29 @@
 {
-  "name": "achse/date-time-inputs",
-  "description": "",
-  "type": "library",
-  "license": ["New BSD"],
-  "authors": [
-    {
-      "name": "Petr Hejna",
-      "homepage": "http://petrhejna.org"
-    }
-  ],
-  "require": {
-    "nette/nette": ">=2.1.0",
-    "php": ">= 5.3.7"
-  },
-  "require-dev": {
-    "nette/tester": "dev-master"
-  },
-  "autoload": {
-    "psr-4": {
-      "Achse\\DateTimeInput\\": "src/"
-    },
-    "classmap": [
-      "src/Exceptions.php"
-    ]
-  }
+	"name": "achse/nette-date-time-input",
+	"description": "",
+	"type": "library",
+	"license": [
+		"New BSD"
+	],
+	"authors": [
+		{
+			"name": "Petr Hejna",
+			"homepage": "http://petrhejna.org"
+		}
+	],
+	"require": {
+		"nette/nette": ">=2.1.0",
+		"php": ">= 5.3.7"
+	},
+	"require-dev": {
+		"nette/tester": "dev-master"
+	},
+	"autoload": {
+		"psr-4": {
+			"Achse\\DateTimeInput\\": "src/"
+		},
+		"classmap": [
+			"src/Exceptions.php"
+		]
+	}
 }

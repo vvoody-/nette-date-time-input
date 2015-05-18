@@ -3,7 +3,7 @@
 namespace Achse\DateTimeInput;
 
 
-interface IDateFormatter
+interface IDateTimeFormatter
 {
 
 	/**
@@ -17,6 +17,23 @@ interface IDateFormatter
 	/**
 	 * @param string $value
 	 * @return \DateTime|NULL
+	 * @throws DateTimeParseException
 	 */
 	public function parse($value);
+
+
+
+	/**
+	 * @param string $value
+	 * @return bool
+	 */
+	public function isValid($value);
+
+
+
+	/**
+	 * @return string
+	 */
+	public function getPattern();
+
 }

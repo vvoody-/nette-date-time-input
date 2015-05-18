@@ -2,6 +2,14 @@
 
 namespace Achse\DateTimeInput;
 
-class DateTimeParseException extends \Exception {
+class DateTimeParseException extends \Exception
+{
+
+}
+
+
+
+class NonSafePatternDetectedException extends \Exception
+{
 
 }
