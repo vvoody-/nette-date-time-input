@@ -16,7 +16,7 @@
 		"php": ">= 5.3.7"
 	},
 	"require-dev": {
-		"nette/tester": "dev-master"
+		"nette/tester": "@dev"
 	},
 	"autoload": {
 		"psr-4": {
