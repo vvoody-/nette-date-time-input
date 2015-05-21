@@ -73,7 +73,13 @@ class DateTimeInput extends TextInput
 	 */
 	public function getValue()
 	{
-		return $this->dateFormatter->parse(parent::getValue());
+		$value = parent::getValue();
+
+		if (!$this->dateFormatter->isValid($value)) {
+			return NULL;
+		}
+
+		return $this->dateFormatter->parse($value);
 	}
 
 
@@ -108,6 +114,16 @@ class DateTimeInput extends TextInput
 	/**
 	 * @return bool
 	 */
+	public function isFilled()
+	{
+		return !$this->isEmpty();
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
 	public function isValid()
 	{
 		return $this->dateFormatter->isValid($this->rawValue);
@@ -127,6 +143,8 @@ class DateTimeInput extends TextInput
 
 		return $control->isEmpty() || $control->isValid();
 	}
+
+
 
 	/**
 	 * @param IControl $control
