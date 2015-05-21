@@ -73,13 +73,7 @@ class DateTimeInput extends TextInput
 	 */
 	public function getValue()
 	{
-		$value = parent::getValue();
-
-		if (!$this->dateFormatter->isValid($value)) {
-			return NULL;
-		}
-
-		return $this->dateFormatter->parse($value);
+		return $this->dateFormatter->parse(parent::getValue());
 	}
 
 
