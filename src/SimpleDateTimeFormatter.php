@@ -3,6 +3,7 @@
 namespace Achse\DateTimeInput;
 
 use Nette\Utils\DateTime;
+use Nette\Utils\Strings;
 
 
 
@@ -33,6 +34,17 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 
 			$this->pattern = $pattern;
 		}
+	}
+
+
+
+	/**
+	 * @param string $value
+	 * @return string
+	 */
+	private static function strip($value)
+	{
+		return Strings::replace($value, '#\s+#', '');
 	}
 
 
@@ -97,6 +109,8 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	 */
 	private static function validateValue($value, $pattern)
 	{
+		$value = static::strip($value);
+
 		if (($parsed = DateTime::createFromFormat($pattern, $value)) === FALSE) {
 			throw new DateTimeParseException("Value does not match desired format: '{$pattern}'.");
 		}
@@ -110,9 +124,12 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 			);
 		}
 
-		if (($checkValue = $parsed->format($pattern)) !== $value) {
+
+		$strippedCrossCheckValue = static::strip($parsed->format($pattern));
+
+		if ($value !== $strippedCrossCheckValue) {
 			throw new DateTimeParseException(
-				"Invalid date give. Check value does not match original. ['{$checkValue}' !== '{$value}']"
+				"Invalid date give. Check value does not match original. ['{$strippedCrossCheckValue}' !== '{$strippedValue}']"
 			);
 		}
 

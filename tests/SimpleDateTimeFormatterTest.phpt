@@ -60,6 +60,16 @@ class SimpleDateTimeFormatterTest extends TestCase
 		Assert::equal(new DateTime('2015-12-05'), $formatter->parse('d: 5; m: 12;y: 2015')->setTime(0, 0, 0));
 	}
 
+
+	public function testFuckingSpaces()
+	{
+		$formatter = new SimpleDateTimeFormatter('j. n. Y');
+		Assert::true($formatter->isValid('6. 10. 2015'));
+		Assert::true($formatter->isValid('6.10.2015'));
+		Assert::true($formatter->isValid(' 6.     10.    2015   '));
+		Assert::true($formatter->isValid("\t6. \t 10.\t2015 \t "));
+	}
+
 }
 
 (new SimpleDateTimeFormatterTest())->run();
