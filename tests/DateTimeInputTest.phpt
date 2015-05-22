@@ -11,6 +11,7 @@ $container = require __DIR__ . '/bootstrap.php';
 use Achse\DateTimeInput\DateTimeInput;
 use Achse\DateTimeInput\IDateTimeFormatter;
 use Achse\DateTimeInput\SimpleDateTimeFormatter;
+use Nette\InvalidArgumentException;
 use Nette\Utils\DateTime;
 use Tester\Assert;
 use Tester\TestCase;
@@ -54,6 +55,28 @@ class DateTimeInputTest extends TestCase
 		$input->setValue(NULL);
 		Assert::true(DateTimeInput::validateDateInputValid($input));
 		Assert::equal(NULL, $input->getValue());
+	}
+
+
+
+	public function testSetDefaultValue()
+	{
+		$input = new DateTimeInput('caption', $this->formatter);
+
+		Assert::exception(
+			function () use ($input) {
+				$input->setDefaultValue('Invalid Type');
+			},
+			InvalidArgumentException::class,
+			'As default value, \DateTime object must be given. \'string\' given instead'
+		);
+
+		$dateTime = new DateTime('2015-05-20 15:16:17');
+		$input->setDefaultValue($dateTime);
+
+		Assert::notSame($dateTime, $input->getValue());
+		Assert::equal($dateTime, $input->getValue());
+
 	}
 
 }

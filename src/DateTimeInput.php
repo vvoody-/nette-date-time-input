@@ -126,6 +126,25 @@ class DateTimeInput extends TextInput
 
 
 	/**
+	 * @inheritdoc
+	 */
+	public function setDefaultValue($value)
+	{
+		if (!$value instanceof \DateTime) {
+			$type = gettype($value);
+
+			throw new InvalidArgumentException(
+				"As default value, \\DateTime object must be given. '"
+				. ($type === 'object' ? get_class($value) : $type) . "' given instead"
+			);
+		}
+
+		return parent::setDefaultValue($value);
+	}
+
+
+
+	/**
 	 * @param IControl $control
 	 * @return bool
 	 */
