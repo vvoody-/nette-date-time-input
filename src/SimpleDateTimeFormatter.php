@@ -129,7 +129,7 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 
 		if ($value !== $strippedCrossCheckValue) {
 			throw new DateTimeParseException(
-				"Invalid date give. Check value does not match original. ['{$strippedCrossCheckValue}' !== '{$strippedValue}']"
+				"Invalid date given. Check value does not match original. ['{$strippedCrossCheckValue}' !== '{$value}']"
 			);
 		}
 
