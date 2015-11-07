@@ -150,9 +150,8 @@ class DateTimeInput extends TextInput
 	 */
 	public static function validateDateInputValid(IControl $control)
 	{
-		if (!$control instanceof static) {
-			throw new InvalidArgumentException("Given control object must be instance of '" . get_class() . "'.");
-		}
+		/** @var static $control */
+		self::validateControlType($control);
 
 		return $control->isEmpty() || $control->isValid();
 	}
@@ -165,11 +164,24 @@ class DateTimeInput extends TextInput
 	 */
 	public static function validateDateInputFilled(IControl $control)
 	{
-		if (!$control instanceof static) {
-			throw new InvalidArgumentException("Given control object must be instance of '" . get_class() . "'.");
-		}
+		/** @var static $control */
+		self::validateControlType($control);
 
 		return !$control->isEmpty();
+	}
+
+
+
+	/**
+	 * @param IControl $control
+	 */
+	private static function validateControlType(IControl $control)
+	{
+		if (!$control instanceof static) {
+			throw new InvalidArgumentException(
+				"Given control object must be instance of '" . get_class() . "', but '" . get_class($control) . "' given."
+			);
+		}
 	}
 
 }
