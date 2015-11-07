@@ -39,17 +39,6 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 
 
 	/**
-	 * @param string $value
-	 * @return string
-	 */
-	private static function strip($value)
-	{
-		return Strings::replace($value, '#\s+#', '');
-	}
-
-
-
-	/**
 	 * @inheritdoc
 	 */
 	public function format(\DateTime $value)
@@ -107,7 +96,7 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	 * @return DateTime
 	 * @throws DateTimeParseException
 	 */
-	private static function validateValue($value, $pattern)
+	protected static function validateValue($value, $pattern)
 	{
 		$value = static::strip($value);
 
@@ -142,7 +131,7 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	 * @param string $pattern
 	 * @throws NonSafePatternDetectedException
 	 */
-	private static function checkPattern($pattern)
+	protected static function checkPattern($pattern)
 	{
 		// Remove \\ for escaping the slash.
 		$pattern = str_replace('\\\\', '', $pattern);
@@ -165,6 +154,17 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 				}
 			}
 		}
+	}
+
+
+
+	/**
+	 * @param string $value
+	 * @return string
+	 */
+	protected static function strip($value)
+	{
+		return Strings::replace($value, '#\s+#', '');
 	}
 
 }
