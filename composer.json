@@ -1,9 +1,11 @@
 {
 	"name": "achse/nette-date-time-input",
-	"description": "",
+	"description": "My custom DateTime Input implementation for Nette Forms.",
 	"type": "library",
-	"license": [
-		"New BSD"
+	"license": "MIT",
+	"keywords": [
+		"forms",
+		"datetime"
 	],
 	"authors": [
 		{
