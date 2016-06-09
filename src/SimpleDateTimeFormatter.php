@@ -139,10 +139,8 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	 * @param string $value
 	 * @return string
 	 */
-	protected
-	function strip(
-		$value
-	) {
+	protected function strip($value)
+	{
 		return Strings::replace($value, '#\s+#', '');
 	}
 
