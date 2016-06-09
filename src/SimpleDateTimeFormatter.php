@@ -104,19 +104,7 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	protected function parseValue($value, $pattern)
 	{
 		$value = $this->strip($value);
-
-		$parsed = DateTime::createFromFormat($pattern, $value);
-		$errors = DateTime::getLastErrors();
-		if ($parsed === FALSE || $errors['error_count'] > 0 || $errors['warning_count'] > 0) {
-			$message = sprintf(
-				'Invalid date given. Errors: [%s], Warnings: [%s]',
-				implode(', ', $errors['errors']),
-				implode(', ', $errors['warnings'])
-			);
-			throw new DateTimeParseException(
-				sprintf("Value does not match desired format: '%s'. Error message: '%s'", $pattern, $message)
-			);
-		}
+		$parsed = $this->createFromFormat($value, $pattern);
 
 		$strippedCrossCheckValue = $this->strip($parsed->format($pattern));
 
@@ -142,6 +130,32 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	protected function strip($value)
 	{
 		return Strings::replace($value, '#\s+#', '');
+	}
+
+
+
+	/**
+	 * @param string $value
+	 * @param string $pattern
+	 * @return DateTime
+	 * @throws DateTimeParseException
+	 */
+	protected function createFromFormat($value, $pattern)
+	{
+		$parsed = DateTime::createFromFormat($pattern, $value);
+		$errors = DateTime::getLastErrors();
+		if ($parsed === FALSE || $errors['error_count'] > 0 || $errors['warning_count'] > 0) {
+			$message = sprintf(
+				'Invalid date given. Errors: [%s], Warnings: [%s]',
+				implode(', ', $errors['errors']),
+				implode(', ', $errors['warnings'])
+			);
+			throw new DateTimeParseException(
+				sprintf("Value does not match desired format: '%s'. Error message: '%s'", $pattern, $message)
+			);
+		}
+
+		return $parsed;
 	}
 
 }
