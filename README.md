@@ -30,3 +30,29 @@ public function addDate($name, $label = NULL, $dateFormatterOrFormat = BaseForm:
 
 	return $this[$name] = new DateTimeInput($label, $dateFormatter);
 ```
+
+# How dos it works
+* `IDateTimeFormatter` is responsible for conversion from string to `DateTime` object and *vice versa*.
+* `IDateTimeFixer` is responsible for removing PHP specific behavior like this: 
+![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat-now.jpg)
+
+## How can I use default `SimpleDateTimeFormatter` and what "safe symbols" means?
+In PHP,  method `DateTime::createFromFormat` has this really unexpected behavior:
+![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat.jpg)
+ 
+Therefore the is some specific logic that prevents you from being affected by this "language feature".
+For more you can see: `SimpleDateTimeFormatter::parseValue` method. It works line this:
+1. Create from format DateTime object and handles all errors.
+2. From this object it creates by given pattern string.
+3. Trims and removes all unnecessary whitespace characters.
+4. Compares that string is same as input string.
+
+But, there is a **leading zero** problem. 
+* You insert: `1. 1. 2015` with patern `d. m. Y`,
+* algorithm creates object and ties to compare it with original,
+* but by pattern created: `01. 01. 2015` `!==` (original) `1. 1. 2015`.
+ 
+Because of this, it's strongly recommended to use only no-leading-zero formats in your datepicker.
+
+**Contribution**: If you wrote better (alternative) `IDateTimeFormatter` send me pull request 
+or just send me email. I'll be happy to integrate it into package.
