@@ -31,11 +31,14 @@ public function addDate($name, $label = NULL, $dateFormatterOrFormat = BaseForm:
 	return $this[$name] = new DateTimeInput($label, $dateFormatter);
 ```
 
-# How dos it works
+# How does it work?
 * `IDateTimeFormatter` is responsible for conversion from string to `DateTime` object and *vice versa*.
 * `IDateTimeFixer` is responsible for removing PHP specific behavior like this: 
 
 ![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat-now.jpg)
+
+* You can provide both of them as service via constructor. If not specified, single new object is created
+for each input.
 
 ## How can I use default `SimpleDateTimeFormatter` and what "safe symbols" means?
 In PHP,  method `DateTime::createFromFormat` has this really unexpected behavior:
