@@ -16,7 +16,7 @@ class DateTimeInput extends TextInput
 	const HTML_CLASS = 'dateTimePicker';
 
 	/**
-	 * @var IDateTimeFormatter
+	 * @var IDateTimeConverter
 	 */
 	protected $dateFormatter;
 
@@ -29,9 +29,9 @@ class DateTimeInput extends TextInput
 
 	/**
 	 * @param string|NULL $caption
-	 * @param IDateTimeFormatter $dateFormatter
+	 * @param IDateTimeConverter $dateFormatter
 	 */
-	public function __construct($caption, IDateTimeFormatter $dateFormatter)
+	public function __construct($caption, IDateTimeConverter $dateFormatter)
 	{
 		parent::__construct($caption);
 

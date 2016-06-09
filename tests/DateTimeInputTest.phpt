@@ -9,8 +9,8 @@ namespace Achse\DateTimeInput\Test;
 require __DIR__ . '/bootstrap.php';
 
 use Achse\DateTimeInput\DateTimeInput;
-use Achse\DateTimeInput\IDateTimeFormatter;
-use Achse\DateTimeInput\SimpleDateTimeFormatter;
+use Achse\DateTimeInput\IDateTimeConverter;
+use Achse\DateTimeInput\SimpleDateTimeConverter;
 use Closure;
 use Mockery;
 use Mockery\MockInterface;
@@ -30,7 +30,7 @@ class DateTimeInputTest extends TestCase
 	const NO_ERRORS = FALSE;
 
 	/**
-	 * @var IDateTimeFormatter
+	 * @var IDateTimeConverter
 	 */
 	private $formatter;
 
@@ -40,7 +40,7 @@ class DateTimeInputTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->formatter = new SimpleDateTimeFormatter('Y-m-d H:i:s', SimpleDateTimeFormatter::ALL_SYMBOLS_ALLOWED);
+		$this->formatter = new SimpleDateTimeConverter('Y-m-d H:i:s', SimpleDateTimeConverter::ALL_SYMBOLS_ALLOWED);
 	}
 
 
@@ -249,10 +249,10 @@ class DateTimeInputTest extends TestCase
 
 	/**
 	 * @param string $rawValue
-	 * @param IDateTimeFormatter $formatter
+	 * @param IDateTimeConverter $formatter
 	 * @return DateTimeInput
 	 */
-	private function getInputWithMockedUserInput($rawValue, IDateTimeFormatter $formatter = NULL)
+	private function getInputWithMockedUserInput($rawValue, IDateTimeConverter $formatter = NULL)
 	{
 		/** @var Form|MockInterface $form */
 		$form = Mockery::mock(new Form());

@@ -7,7 +7,7 @@ use Nette\Utils\Strings;
 
 
 
-class SimpleDateTimeFormatter implements IDateTimeFormatter
+class SimpleDateTimeConverter implements IDateTimeConverter
 {
 
 	const SAVE_SYMBOLS_ONLY = TRUE;

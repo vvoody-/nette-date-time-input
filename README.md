@@ -18,15 +18,15 @@ const DEFAULT_DATE_FORMAT = 'j. n. Y';
 /**
  * @param string $name
  * @param string|NULL $label
- * @param IDateTimeFormatter|string $dateFormatterOrFormat
+ * @param IDateTimeConverter|string $dateFormatterOrFormat
  * @return DateTimeInput
  */
 public function addDate($name, $label = NULL, $dateFormatterOrFormat = BaseForm::DEFAULT_DATE_FORMAT)
 {
-	/** @var IDateTimeFormatter $dateFormatter */
-	$dateFormatter = $dateFormatterOrFormat instanceof IDateTimeFormatter
+	/** @var IDateTimeConverter $dateFormatter */
+	$dateFormatter = $dateFormatterOrFormat instanceof IDateTimeConverter
 		? $dateFormatterOrFormat
-		: new SimpleDateTimeFormatter($dateFormatterOrFormat);
+		: new SimpleDateTimeConverter($dateFormatterOrFormat);
 
 	return $this[$name] = new DateTimeInput($label, $dateFormatter);
 ```
@@ -35,7 +35,7 @@ public function addDate($name, $label = NULL, $dateFormatterOrFormat = BaseForm:
 It creates simple text input. Handling client side is fully up to you. (For example: https://eonasdan.github.io/bootstrap-datetimepicker/)
  
 As result it returns `DateTime` object. Internally it use:
-* `IDateTimeFormatter` - responsible for conversion from string to `DateTime` object and *vice versa*.
+* `IDateTimeConverter` - responsible for conversion from string to `DateTime` object and *vice versa*.
 * `IDateTimeFixer` - responsible for removing PHP specific behavior like this: 
 
 ![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat-now.jpg)
@@ -43,12 +43,12 @@ As result it returns `DateTime` object. Internally it use:
 You can provide both of them as service via constructor. If not specified, single new object is created
 for each input.
 
-## Default formatter: `SimpleDateTimeFormatter` and what "safe symbols" means?
+## Default formatter: `SimpleDateTimeConverter` and what "safe symbols" means?
 In PHP, method `DateTime::createFromFormat` has this really unexpected behavior:
 
 ![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat.jpg)
  
-Therefore `SimpleDateTimeFormatter` prevents you from being affected by this "language feature". 
+Therefore `SimpleDateTimeConverter` prevents you from being affected by this "language feature". 
 
 It works line this:
 
@@ -57,7 +57,7 @@ It works line this:
 3. object is formatted by original patter back to string,
 4. string is compared, if is same as input string.
 
-*(For more you can see: `SimpleDateTimeFormatter::parseValue` method.)* 
+*(For more you can see: `SimpleDateTimeConverter::parseValue` method.)* 
 
 But, there is a **leading zero** problem. 
 * You insert: `1. 1. 2015` with pattern `d. m. Y`,
@@ -67,5 +67,5 @@ But, there is a **leading zero** problem.
 Because of this, it's strongly recommended to use only no-leading-zero formats in your datepicker.
 
 # Contribution
-* If you wrote better (alternative) `IDateTimeFormatter` send me pull request or just send me email. I'll be really happy to integrate it into package.
+* If you wrote better (alternative) `IDateTimeConverter` send me pull request or just send me email. I'll be really happy to integrate it into package.
 * If you have ANY suggestion or idea how to make it better I'll be happy for every opened issue.

@@ -8,14 +8,14 @@ namespace Achse\DateTimeInput\Test;
 
 require __DIR__ . '/bootstrap.php';
 
-use Achse\DateTimeInput\SimpleDateTimeFormatter;
+use Achse\DateTimeInput\SimpleDateTimeConverter;
 use Nette\Utils\DateTime;
 use Tester\Assert;
 use Tester\TestCase;
 
 
 
-class SimpleDateTimeFormatterTest extends TestCase
+class SimpleDateTimeConverterTest extends TestCase
 {
 
 	/**
@@ -30,9 +30,9 @@ class SimpleDateTimeFormatterTest extends TestCase
 		$expected,
 		$toBeParsed,
 		$pattern,
-		$saveSymbols = SimpleDateTimeFormatter::SAVE_SYMBOLS_ONLY
+		$saveSymbols = SimpleDateTimeConverter::SAVE_SYMBOLS_ONLY
 	) {
-		$formatter = new SimpleDateTimeFormatter($pattern, $saveSymbols);
+		$formatter = new SimpleDateTimeConverter($pattern, $saveSymbols);
 		Assert::equal($pattern, $formatter->getPattern());
 
 		Assert::true($formatter->isValid($toBeParsed));
@@ -52,7 +52,7 @@ class SimpleDateTimeFormatterTest extends TestCase
 				new DateTime('2015-01-02 03:04:05'),
 				'2015-01-02 03:04:05',
 				'Y-m-d H:i:s',
-				SimpleDateTimeFormatter::ALL_SYMBOLS_ALLOWED
+				SimpleDateTimeConverter::ALL_SYMBOLS_ALLOWED
 			],
 		];
 	}
@@ -71,9 +71,9 @@ class SimpleDateTimeFormatterTest extends TestCase
 		$expected,
 		$input,
 		$pattern,
-		$saveSymbols = SimpleDateTimeFormatter::SAVE_SYMBOLS_ONLY
+		$saveSymbols = SimpleDateTimeConverter::SAVE_SYMBOLS_ONLY
 	) {
-		$formatter = new SimpleDateTimeFormatter($pattern, $saveSymbols);
+		$formatter = new SimpleDateTimeConverter($pattern, $saveSymbols);
 		Assert::equal($expected, $formatter->isValid($input));
 	}
 
@@ -96,9 +96,9 @@ class SimpleDateTimeFormatterTest extends TestCase
 			[FALSE, '32. 1. 2015', 'j. n. Y'],
 
 			[FALSE, 'tralala', 'j. n. Y'],
-			[FALSE, 'tralala', 'Y-m-d H:i:s', SimpleDateTimeFormatter::ALL_SYMBOLS_ALLOWED],
+			[FALSE, 'tralala', 'Y-m-d H:i:s', SimpleDateTimeConverter::ALL_SYMBOLS_ALLOWED],
 			
-			[FALSE, '2015-10-24 12:13:14', 'Y-m-d', SimpleDateTimeFormatter::ALL_SYMBOLS_ALLOWED],
+			[FALSE, '2015-10-24 12:13:14', 'Y-m-d', SimpleDateTimeConverter::ALL_SYMBOLS_ALLOWED],
 		];
 	}
 
@@ -106,4 +106,4 @@ class SimpleDateTimeFormatterTest extends TestCase
 
 
 
-(new SimpleDateTimeFormatterTest())->run();
+(new SimpleDateTimeConverterTest())->run();

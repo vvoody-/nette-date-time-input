@@ -3,7 +3,7 @@
 namespace Achse\DateTimeInput;
 
 
-interface IDateTimeFormatter
+interface IDateTimeConverter
 {
 
 	/**
