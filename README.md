@@ -37,7 +37,8 @@ It creates simple text input. Handling client side is fully up to you. (For exam
 As result it returns `DateTime` object. Internally it use:
 * `IDateTimeFormatter` - responsible for conversion from string to `DateTime` object and *vice versa*.
 * `IDateTimeFixer` - responsible for removing PHP specific behavior like this: 
-  ![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat-now.jpg)
+
+![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat-now.jpg)
 
 You can provide both of them as service via constructor. If not specified, single new object is created
 for each input.
