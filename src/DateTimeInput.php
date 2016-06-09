@@ -13,6 +13,8 @@ use Nette\Utils\Html;
 class DateTimeInput extends TextInput
 {
 
+	const HTML_CLASS = 'dateTimePicker';
+
 	/**
 	 * @var IDateTimeFormatter
 	 */
@@ -44,7 +46,7 @@ class DateTimeInput extends TextInput
 	public function getControl()
 	{
 		$control = parent::getControl();
-		$control->addClass('datetimepicker');
+		$control->addClass(self::HTML_CLASS);
 
 		return $control;
 	}
@@ -84,10 +86,10 @@ class DateTimeInput extends TextInput
 	public function addRule($operation, $message = NULL, $arg = NULL)
 	{
 		if ($operation === Form::FILLED) {
-			$operation = __CLASS__ . '::validateDateInputFilled';
+			$operation = __CLASS__ . '::validateDateTimeInputFilled';
 
 		} elseif ($operation === Form::VALID) {
-			$operation = __CLASS__ . '::validateDateInputValid';
+			$operation = __CLASS__ . '::validateDateTimeInputValid';
 		}
 
 		return parent::addRule($operation, $message, $arg);
@@ -134,8 +136,11 @@ class DateTimeInput extends TextInput
 			$type = gettype($value);
 
 			throw new InvalidArgumentException(
-				"As default value, \\DateTime object must be given. '"
-				. ($type === 'object' ? get_class($value) : $type) . "' given instead"
+				sprintf(
+					"As default value, %s object must be given, '%s' given instead.",
+					\DateTime::class,
+					$type === 'object' ? get_class($value) : $type
+				)
 			);
 		}
 
@@ -148,7 +153,7 @@ class DateTimeInput extends TextInput
 	 * @param IControl $control
 	 * @return bool
 	 */
-	public static function validateDateInputValid(IControl $control)
+	public static function validateDateTimeInputValid(IControl $control)
 	{
 		/** @var static $control */
 		self::validateControlType($control);
@@ -162,7 +167,7 @@ class DateTimeInput extends TextInput
 	 * @param IControl $control
 	 * @return bool
 	 */
-	public static function validateDateInputFilled(IControl $control)
+	public static function validateDateTimeInputFilled(IControl $control)
 	{
 		/** @var static $control */
 		self::validateControlType($control);
@@ -179,7 +184,9 @@ class DateTimeInput extends TextInput
 	{
 		if (!$control instanceof static) {
 			throw new InvalidArgumentException(
-				"Given control object must be instance of '" . get_class() . "', but '" . get_class($control) . "' given."
+				"Given control object must be instance of '" . get_class() . "', but '" . get_class(
+					$control
+				) . "' given."
 			);
 		}
 	}

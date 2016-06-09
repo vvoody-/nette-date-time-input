@@ -105,16 +105,16 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	{
 		$value = $this->strip($value);
 
-		if (($parsed = DateTime::createFromFormat($pattern, $value)) === FALSE) {
-			throw new DateTimeParseException("Value does not match desired format: '{$pattern}'.");
-		}
-
-		$error = DateTime::getLastErrors();
-		if ($error['error_count'] > 0 || $error['warning_count'] > 0) {
+		$parsed = DateTime::createFromFormat($pattern, $value);
+		$errors = DateTime::getLastErrors();
+		if ($parsed === FALSE || $errors['error_count'] > 0 || $errors['warning_count'] > 0) {
+			$message = sprintf(
+				'Invalid date given. Errors: [%s], Warnings: [%s]',
+				implode(', ', $errors['errors']),
+				implode(', ', $errors['warnings'])
+			);
 			throw new DateTimeParseException(
-				'Invalid date given. ' .
-				'Errors: ' . implode(', ', $error['errors']) . ' ' .
-				'Warnings: ' . implode(', ', $error['warnings'])
+				sprintf("Value does not match desired format: '%s'. Error message: '%s'", $pattern, $message)
 			);
 		}
 
@@ -122,7 +122,11 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 
 		if ($value !== $strippedCrossCheckValue) {
 			throw new DateTimeParseException(
-				"Invalid date given. Check value does not match original. ['{$strippedCrossCheckValue}' !== '{$value}']"
+				sprintf(
+					"Invalid date given. Check value does not match original. ['%s' !== '%s']",
+					$strippedCrossCheckValue,
+					$value
+				)
 			);
 		}
 
@@ -135,8 +139,10 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	 * @param string $value
 	 * @return string
 	 */
-	protected function strip($value)
-	{
+	protected
+	function strip(
+		$value
+	) {
 		return Strings::replace($value, '#\s+#', '');
 	}
 

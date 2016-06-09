@@ -67,7 +67,7 @@ class SimpleDateTimeFormatterTest extends TestCase
 	 * @param string $pattern
 	 * @param bool $saveSymbols
 	 */
-	public function testFuckingSpaces(
+	public function testIsValid(
 		$expected,
 		$input,
 		$pattern,
@@ -97,6 +97,8 @@ class SimpleDateTimeFormatterTest extends TestCase
 
 			[FALSE, 'tralala', 'j. n. Y'],
 			[FALSE, 'tralala', 'Y-m-d H:i:s', SimpleDateTimeFormatter::ALL_SYMBOLS_ALLOWED],
+			
+			[FALSE, '2015-10-24 12:13:14', 'Y-m-d', SimpleDateTimeFormatter::ALL_SYMBOLS_ALLOWED],
 		];
 	}
 
