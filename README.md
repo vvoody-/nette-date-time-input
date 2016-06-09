@@ -34,14 +34,17 @@ public function addDate($name, $label = NULL, $dateFormatterOrFormat = BaseForm:
 # How dos it works
 * `IDateTimeFormatter` is responsible for conversion from string to `DateTime` object and *vice versa*.
 * `IDateTimeFixer` is responsible for removing PHP specific behavior like this: 
+
 ![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat-now.jpg)
 
 ## How can I use default `SimpleDateTimeFormatter` and what "safe symbols" means?
 In PHP,  method `DateTime::createFromFormat` has this really unexpected behavior:
+
 ![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat.jpg)
  
 Therefore the is some specific logic that prevents you from being affected by this "language feature".
 For more you can see: `SimpleDateTimeFormatter::parseValue` method. It works line this:
+
 1. Create from format DateTime object and handles all errors.
 2. From this object it creates by given pattern string.
 3. Trims and removes all unnecessary whitespace characters.
