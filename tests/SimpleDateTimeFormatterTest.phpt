@@ -6,9 +6,8 @@
 
 namespace Achse\DateTimeInput\Test;
 
-$container = require __DIR__ . '/bootstrap.php';
+require __DIR__ . '/bootstrap.php';
 
-use Achse\DateTimeInput\NonSafePatternDetectedException;
 use Achse\DateTimeInput\SimpleDateTimeFormatter;
 use Nette\Utils\DateTime;
 use Tester\Assert;
@@ -19,57 +18,90 @@ use Tester\TestCase;
 class SimpleDateTimeFormatterTest extends TestCase
 {
 
-	public function testDefault()
-	{
-		$formatter = new SimpleDateTimeFormatter();
-		Assert::equal('Y-m-d H:i:s', $formatter->getPattern());
+	/**
+	 * @dataProvider getDataForParsePatternTest
+	 *
+	 * @param DateTime $expected
+	 * @param string $toBeParsed
+	 * @param string $pattern
+	 * @param bool $saveSymbols
+	 */
+	public function testParsePattern(
+		$expected,
+		$toBeParsed,
+		$pattern,
+		$saveSymbols = SimpleDateTimeFormatter::SAVE_SYMBOLS_ONLY
+	) {
+		$formatter = new SimpleDateTimeFormatter($pattern, $saveSymbols);
+		Assert::equal($pattern, $formatter->getPattern());
 
-		$toBeParsed = '2015-01-02 03:04:05';
-		Assert::false($formatter->isValid('tralala'));
 		Assert::true($formatter->isValid($toBeParsed));
-		Assert::equal(new DateTime('2015-01-02 03:04:05'), $formatter->parse($toBeParsed));
+		Assert::equal($expected, $formatter->parse($toBeParsed));
 	}
 
 
 
-	public function testUseCzechPattern()
+	/**
+	 * @return array
+	 */
+	public function getDataForParsePatternTest()
 	{
-		$formatter = new SimpleDateTimeFormatter('j. n. Y');
-		Assert::equal('j. n. Y', $formatter->getPattern());
-
-		$toBeParsed = '18. 5. 2015';
-		Assert::true($formatter->isValid($toBeParsed));
-		Assert::equal(new DateTime('2015-05-18 00:00:00'), $formatter->parse($toBeParsed)->setTime(0, 0, 0));
-
-		Assert::false($formatter->isValid('1. 13. 2015'));
-		Assert::false($formatter->isValid('99. 1. 2015'));
-		Assert::false($formatter->isValid('32. 1. 2015'));
+		return [
+			[new DateTime('2015-05-18 00:00:00'), '18. 5. 2015', 'j. n. Y'],
+			[
+				new DateTime('2015-01-02 03:04:05'),
+				'2015-01-02 03:04:05',
+				'Y-m-d H:i:s',
+				SimpleDateTimeFormatter::ALL_SYMBOLS_ALLOWED
+			],
+		];
 	}
 
 
 
-	public function testSafePatternCheck()
-	{
-		Assert::exception(function () {
-			$formatter = new SimpleDateTimeFormatter('d. m. Y');
-		},
-			NonSafePatternDetectedException::class
-		);
-
-		$formatter = new SimpleDateTimeFormatter('\d: j; \m: n;\y: Y');
-		Assert::equal(new DateTime('2015-12-05'), $formatter->parse('d: 5; m: 12;y: 2015')->setTime(0, 0, 0));
+	/**
+	 * @dataProvider getDataForIsValid
+	 *
+	 * @param bool $expected
+	 * @param string $input
+	 * @param string $pattern
+	 * @param bool $saveSymbols
+	 */
+	public function testFuckingSpaces(
+		$expected,
+		$input,
+		$pattern,
+		$saveSymbols = SimpleDateTimeFormatter::SAVE_SYMBOLS_ONLY
+	) {
+		$formatter = new SimpleDateTimeFormatter($pattern, $saveSymbols);
+		Assert::equal($expected, $formatter->isValid($input));
 	}
 
 
-	public function testFuckingSpaces()
+
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForIsValid()
 	{
-		$formatter = new SimpleDateTimeFormatter('j. n. Y');
-		Assert::true($formatter->isValid('6. 10. 2015'));
-		Assert::true($formatter->isValid('6.10.2015'));
-		Assert::true($formatter->isValid(' 6.     10.    2015   '));
-		Assert::true($formatter->isValid("\t6. \t 10.\t2015 \t "));
+		return [
+			[TRUE, '6. 10. 2015', 'j. n. Y'],
+			[TRUE, '6.10.2015', 'j. n. Y'],
+			[TRUE, ' 6.     10.    2015   ', 'j. n. Y'],
+			[TRUE, "\t6. \t 10.\t2015 \t ", 'j. n. Y'],
+
+			[TRUE, '18. 5. 2015', 'j. n. Y'],
+			[FALSE, '1. 13. 2015', 'j. n. Y'],
+			[FALSE, '99. 1. 2015', 'j. n. Y'],
+			[FALSE, '32. 1. 2015', 'j. n. Y'],
+
+			[FALSE, 'tralala', 'j. n. Y'],
+			[FALSE, 'tralala', 'Y-m-d H:i:s', SimpleDateTimeFormatter::ALL_SYMBOLS_ALLOWED],
+		];
 	}
 
 }
+
+
 
 (new SimpleDateTimeFormatterTest())->run();

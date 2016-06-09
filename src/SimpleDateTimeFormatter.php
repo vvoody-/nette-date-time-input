@@ -16,24 +16,31 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	/**
 	 * @var string
 	 */
-	protected $pattern = 'Y-m-d H:i:s';
+	protected $pattern;
+
+	/**
+	 * @var IDateTimeFixer|NULL
+	 */
+	private $dateTimeFixer;
 
 
 
 	/**
-	 * @param string|NULL $pattern
+	 * @param string $pattern
 	 * @param bool $saveSymbolsOnly
+	 * @param IDateTimeFixer|NULL $dateTimeFixer
 	 */
-	public function __construct($pattern = NULL, $saveSymbolsOnly = self::SAVE_SYMBOLS_ONLY)
-	{
-		if ($pattern !== NULL) {
-
-			if ($saveSymbolsOnly) {
-				self::checkPattern($pattern);
-			}
-
-			$this->pattern = $pattern;
+	public function __construct(
+		$pattern,
+		$saveSymbolsOnly = self::SAVE_SYMBOLS_ONLY,
+		IDateTimeFixer $dateTimeFixer = NULL
+	) {
+		if ($saveSymbolsOnly) {
+			Tools::checkPattern($pattern);
 		}
+
+		$this->pattern = $pattern;
+		$this->dateTimeFixer = $dateTimeFixer !== NULL ? $dateTimeFixer : new SimplePatternParsingFixer();
 	}
 
 
@@ -57,7 +64,7 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 			return NULL;
 		}
 
-		return static::validateValue($value, $this->pattern);
+		return $this->parseValue($value, $this->pattern);
 	}
 
 
@@ -68,7 +75,7 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	public function isValid($value)
 	{
 		try {
-			static::validateValue($value, $this->pattern);
+			$this->parseValue($value, $this->pattern);
 		} catch (DateTimeParseException $e) {
 			return FALSE;
 		}
@@ -89,16 +96,14 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 
 
 	/**
-	 * @Todo Separate this method to some DateTime Utils class
-	 *
 	 * @param string $value
 	 * @param string $pattern
 	 * @return DateTime
 	 * @throws DateTimeParseException
 	 */
-	protected static function validateValue($value, $pattern)
+	protected function parseValue($value, $pattern)
 	{
-		$value = static::strip($value);
+		$value = $this->strip($value);
 
 		if (($parsed = DateTime::createFromFormat($pattern, $value)) === FALSE) {
 			throw new DateTimeParseException("Value does not match desired format: '{$pattern}'.");
@@ -113,8 +118,7 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 			);
 		}
 
-
-		$strippedCrossCheckValue = static::strip($parsed->format($pattern));
+		$strippedCrossCheckValue = $this->strip($parsed->format($pattern));
 
 		if ($value !== $strippedCrossCheckValue) {
 			throw new DateTimeParseException(
@@ -122,38 +126,7 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 			);
 		}
 
-		return $parsed;
-	}
-
-
-
-	/**
-	 * @param string $pattern
-	 * @throws NonSafePatternDetectedException
-	 */
-	protected static function checkPattern($pattern)
-	{
-		// Remove \\ for escaping the slash.
-		$pattern = str_replace('\\\\', '', $pattern);
-
-		$unsafeSymbols = [
-			'd' => 'j',
-			'm' => 'n',
-		];
-
-		foreach ($unsafeSymbols as $symbol => $recommended) {
-
-			if (($position = strpos($pattern, $symbol)) !== FALSE) {
-
-				if ($position === 0 || $pattern[$position - 1] !== '\\') {
-					throw new NonSafePatternDetectedException(
-						"Potentially unsafe symbol found in Pattern: '{$symbol}'. Use '{$recommended}' " .
-						"if possible set SaveSymbol mode OFF."
-					);
-
-				}
-			}
-		}
+		return $this->dateTimeFixer->fixCurrentTimeValues($parsed, $this->pattern);
 	}
 
 
@@ -162,7 +135,7 @@ class SimpleDateTimeFormatter implements IDateTimeFormatter
 	 * @param string $value
 	 * @return string
 	 */
-	protected static function strip($value)
+	protected function strip($value)
 	{
 		return Strings::replace($value, '#\s+#', '');
 	}

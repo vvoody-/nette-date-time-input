@@ -1,3 +1,4 @@
 composer.lock
 vendor/*
 !vendor/others
+tests/output

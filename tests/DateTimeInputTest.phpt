@@ -6,7 +6,7 @@
 
 namespace Achse\DateTimeInput\Test;
 
-$container = require __DIR__ . '/bootstrap.php';
+require __DIR__ . '/bootstrap.php';
 
 use Achse\DateTimeInput\DateTimeInput;
 use Achse\DateTimeInput\IDateTimeFormatter;
@@ -32,7 +32,7 @@ class DateTimeInputTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->formatter = new SimpleDateTimeFormatter();
+		$this->formatter = new SimpleDateTimeFormatter('Y-m-d H:i:s', SimpleDateTimeFormatter::ALL_SYMBOLS_ALLOWED);
 	}
 
 
@@ -76,7 +76,6 @@ class DateTimeInputTest extends TestCase
 
 		Assert::notSame($dateTime, $input->getValue());
 		Assert::equal($dateTime, $input->getValue());
-
 	}
 
 }
