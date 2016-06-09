@@ -2,7 +2,7 @@
 [![Latest Stable Version](https://poser.pugx.org/achse/nette-date-time-input/v/stable)](https://github.com/achse/nette-date-time-input/releases)
 ![](https://travis-ci.org/Achse/nette-date-time-input.svg?branch=master)
 ![](https://scrutinizer-ci.com/g/Achse/nette-date-time-input/badges/quality-score.png?b=master)
-![](https://scrutinizer-ci.com/g/Achse/nette-date-time-input/badges/coverage.png?b=master)
+[![Coverage Status](https://coveralls.io/repos/github/Achse/nette-date-time-input/badge.svg?branch=master)](https://coveralls.io/github/Achse/nette-date-time-input?branch=master)
 
 # Installation
 ```
