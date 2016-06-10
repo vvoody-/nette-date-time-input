@@ -2,6 +2,7 @@
 
 namespace Achse\DateTimeInput;
 
+use Achse\DateTimeFormatTools\Tools;
 use Nette\Utils\DateTime;
 use Nette\Utils\Strings;
 

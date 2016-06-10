@@ -4,7 +4,6 @@
 	"type": "library",
 	"license": "MIT",
 	"keywords": [
-		"forms",
 		"datetime"
 	],
 	"authors": [
@@ -14,6 +13,7 @@
 		}
 	],
 	"require": {
+		"achse/datetime-format-tools": "^1.0",
 		"nette/forms": ">=2.1.0",
 		"php": ">= 5.6"
 	},

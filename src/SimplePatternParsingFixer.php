@@ -2,6 +2,7 @@
 
 namespace Achse\DateTimeInput;
 
+use Achse\DateTimeFormatTools\Tools;
 use Nette\Object;
 
 
@@ -73,7 +74,7 @@ class SimplePatternParsingFixer extends Object implements IDateTimeFixer
 		if (!isset($this->symbolTypePresence[$pattern])) {
 			$this->symbolTypePresence[$pattern] = [];
 			foreach ($this->configuration as $symbolName => $symbolConfiguration) {
-				$this->symbolTypePresence[$pattern][$symbolName] = Tools::areSymbolsInPattern(
+				$this->symbolTypePresence[$pattern][$symbolName] = Tools::isAnyOfSymbolsInPattern(
 					$symbolConfiguration['symbols'],
 					$pattern
 				);
