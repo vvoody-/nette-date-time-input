@@ -21,7 +21,7 @@ Basic usage is to add into your `BaseForm` or `FormElements` trait code like thi
  */
 public function addDate($name, $label = NULL, $dateConverterOrFormat = 'j. n. Y')
 {
-	return $this[$name] = DateTimeInputFactory::create(label, $dateConverterOrFormat);
+	return $this[$name] = DateTimeInputFactory::create($label, $dateConverterOrFormat);
 }
 ```
 
