@@ -13,22 +13,16 @@ composer require achse/nette-date-time-input
 Basic usage is to add into your `BaseForm` or `FormElements` trait code like this:
 
 ```php
-const DEFAULT_DATE_FORMAT = 'j. n. Y';
-
 /**
  * @param string $name
  * @param string|NULL $label
- * @param IDateTimeConverter|string $dateFormatterOrFormat
+ * @param IDateTimeConverter|string $dateConverterOrFormat
  * @return DateTimeInput
  */
-public function addDate($name, $label = NULL, $dateFormatterOrFormat = BaseForm::DEFAULT_DATE_FORMAT)
+public function addDate($name, $label = NULL, $dateConverterOrFormat = 'j. n. Y')
 {
-	/** @var IDateTimeConverter $dateFormatter */
-	$dateFormatter = $dateFormatterOrFormat instanceof IDateTimeConverter
-		? $dateFormatterOrFormat
-		: new SimpleDateTimeConverter($dateFormatterOrFormat);
-
-	return $this[$name] = new DateTimeInput($label, $dateFormatter);
+	return $this[$name] = DateTimeInputFactory::create(label, $dateConverterOrFormat);
+}
 ```
 
 # How does it work?
@@ -40,10 +34,9 @@ As result it returns `DateTime` object. Internally it use:
 
 ![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat-now.jpg)
 
-You can provide both of them as service via constructor. If not specified, single new object is created
-for each input.
+You can provide both of them as service. If not specified, single new object is created for each input.
 
-## Default formatter: `SimpleDateTimeConverter` and what "safe symbols" means?
+## Default converter: `SimpleDateTimeConverter` and what "safe symbols" means?
 In PHP, method `DateTime::createFromFormat` has this really unexpected behavior:
 
 ![](https://raw.githubusercontent.com/Achse/nette-date-time-input/master/examples/createFromFormat.jpg)

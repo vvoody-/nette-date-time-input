@@ -18,7 +18,7 @@ class DateTimeInput extends TextInput
 	/**
 	 * @var IDateTimeConverter
 	 */
-	protected $dateFormatter;
+	protected $dateConverter;
 
 	/**
 	 * @var string|NULL
@@ -29,13 +29,13 @@ class DateTimeInput extends TextInput
 
 	/**
 	 * @param string|NULL $caption
-	 * @param IDateTimeConverter $dateFormatter
+	 * @param IDateTimeConverter $dateConverter
 	 */
-	public function __construct($caption, IDateTimeConverter $dateFormatter)
+	public function __construct($caption, IDateTimeConverter $dateConverter)
 	{
 		parent::__construct($caption);
 
-		$this->dateFormatter = $dateFormatter;
+		$this->dateConverter = $dateConverter;
 	}
 
 
@@ -60,7 +60,7 @@ class DateTimeInput extends TextInput
 	public function setValue($value)
 	{
 		if ($value instanceof \DateTime) {
-			$value = $this->dateFormatter->format($value);
+			$value = $this->dateConverter->format($value);
 		}
 
 		$this->rawValue = trim($value);
@@ -75,7 +75,7 @@ class DateTimeInput extends TextInput
 	 */
 	public function getValue()
 	{
-		return $this->dateFormatter->parse(parent::getValue());
+		return $this->dateConverter->parse(parent::getValue());
 	}
 
 
@@ -122,7 +122,7 @@ class DateTimeInput extends TextInput
 	 */
 	public function isValid()
 	{
-		return $this->dateFormatter->isValid($this->rawValue);
+		return $this->dateConverter->isValid($this->rawValue);
 	}
 
 

@@ -32,7 +32,7 @@ class DateTimeInputTest extends TestCase
 	/**
 	 * @var IDateTimeConverter
 	 */
-	private $formatter;
+	private $converter;
 
 
 
@@ -40,7 +40,7 @@ class DateTimeInputTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->formatter = new SimpleDateTimeConverter('Y-m-d H:i:s', SimpleDateTimeConverter::ALL_SYMBOLS_ALLOWED);
+		$this->converter = new SimpleDateTimeConverter('Y-m-d H:i:s', SimpleDateTimeConverter::ALL_SYMBOLS_ALLOWED);
 	}
 
 
@@ -48,7 +48,7 @@ class DateTimeInputTest extends TestCase
 	public function testSimple()
 	{
 
-		$input = new DateTimeInput('caption', $this->formatter);
+		$input = new DateTimeInput('caption', $this->converter);
 		Assert::null($input->getValue());
 
 		$testDateTime = '2013-12-11 10:09:08';
@@ -69,7 +69,7 @@ class DateTimeInputTest extends TestCase
 
 	public function testSetDefaultValue()
 	{
-		$input = new DateTimeInput('caption', $this->formatter);
+		$input = new DateTimeInput('caption', $this->converter);
 
 		Assert::exception(
 			function () use ($input) {
@@ -91,7 +91,7 @@ class DateTimeInputTest extends TestCase
 	public function testGetControl()
 	{
 		$form = new Form();
-		$input = new DateTimeInput('caption', $this->formatter);
+		$input = new DateTimeInput('caption', $this->converter);
 		$input->setParent($form, 'dateTimeInput');
 
 		Assert::equal(
@@ -149,7 +149,7 @@ class DateTimeInputTest extends TestCase
 
 	public function testIsEmptyIsFilled()
 	{
-		$input = new DateTimeInput('caption', $this->formatter);
+		$input = new DateTimeInput('caption', $this->converter);
 		Assert::true($input->isEmpty());
 		Assert::false($input->isFilled());
 
@@ -249,16 +249,16 @@ class DateTimeInputTest extends TestCase
 
 	/**
 	 * @param string $rawValue
-	 * @param IDateTimeConverter $formatter
+	 * @param IDateTimeConverter $converter
 	 * @return DateTimeInput
 	 */
-	private function getInputWithMockedUserInput($rawValue, IDateTimeConverter $formatter = NULL)
+	private function getInputWithMockedUserInput($rawValue, IDateTimeConverter $converter = NULL)
 	{
 		/** @var Form|MockInterface $form */
 		$form = Mockery::mock(new Form());
 		$form->shouldReceive('getHttpData')->andReturn($rawValue);
 
-		$input = new DateTimeInput('caption', $formatter !== NULL ? $formatter : $this->formatter);
+		$input = new DateTimeInput('caption', $converter !== NULL ? $converter : $this->converter);
 		$input->setParent($form, 'dateTime');
 
 		return $input;

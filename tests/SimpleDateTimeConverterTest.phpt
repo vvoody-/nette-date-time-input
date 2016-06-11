@@ -32,11 +32,11 @@ class SimpleDateTimeConverterTest extends TestCase
 		$pattern,
 		$saveSymbols = SimpleDateTimeConverter::SAVE_SYMBOLS_ONLY
 	) {
-		$formatter = new SimpleDateTimeConverter($pattern, $saveSymbols);
-		Assert::equal($pattern, $formatter->getPattern());
+		$converter = new SimpleDateTimeConverter($pattern, $saveSymbols);
+		Assert::equal($pattern, $converter->getPattern());
 
-		Assert::true($formatter->isValid($toBeParsed));
-		Assert::equal($expected, $formatter->parse($toBeParsed));
+		Assert::true($converter->isValid($toBeParsed));
+		Assert::equal($expected, $converter->parse($toBeParsed));
 	}
 
 
@@ -73,8 +73,8 @@ class SimpleDateTimeConverterTest extends TestCase
 		$pattern,
 		$saveSymbols = SimpleDateTimeConverter::SAVE_SYMBOLS_ONLY
 	) {
-		$formatter = new SimpleDateTimeConverter($pattern, $saveSymbols);
-		Assert::equal($expected, $formatter->isValid($input));
+		$converter = new SimpleDateTimeConverter($pattern, $saveSymbols);
+		Assert::equal($expected, $converter->isValid($input));
 	}
 
 
