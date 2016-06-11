@@ -25,6 +25,10 @@ public function addDate($name, $label = NULL, $dateConverterOrFormat = 'j. n. Y'
 }
 ```
 
+## Validation
+* You can use any `addRule(Form::XXX` like you are used to do for any other input.
+* Rules `Form::VALID` and `Form::FILLED` are reimplemented to behave according to given DateTime format.
+
 # How does it work?
 It creates simple text input. Handling client side is fully up to you. (For example: https://eonasdan.github.io/bootstrap-datetimepicker/)
  

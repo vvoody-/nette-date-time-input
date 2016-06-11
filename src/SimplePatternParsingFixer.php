@@ -50,12 +50,12 @@ class SimplePatternParsingFixer extends Object implements IDateTimeFixer
 	{
 		$symbolTypePresence = $this->resolveTimePatternPartPresence($pattern);
 
-		$years = $this->fixValueForSymbol('years', $dateTime, $symbolTypePresence, 'Y');
-		$months = $this->fixValueForSymbol('months', $dateTime, $symbolTypePresence, 'm', 1); // Month zero is not valid
-		$days = $this->fixValueForSymbol('days', $dateTime, $symbolTypePresence, 'd', 1); // Day zero is not valid
-		$hours = $this->fixValueForSymbol('hours', $dateTime, $symbolTypePresence, 'H');
-		$minutes = $this->fixValueForSymbol('minutes', $dateTime, $symbolTypePresence, 'i');
-		$seconds = $this->fixValueForSymbol('seconds', $dateTime, $symbolTypePresence, 's');
+		$years = $this->fixValueForSymbol($symbolTypePresence, 'years', $dateTime, 'Y');
+		$months = $this->fixValueForSymbol($symbolTypePresence, 'months', $dateTime, 'm', 1); // Month zero is not valid
+		$days = $this->fixValueForSymbol($symbolTypePresence, 'days', $dateTime, 'd', 1); // Day zero is not valid
+		$hours = $this->fixValueForSymbol($symbolTypePresence, 'hours', $dateTime, 'H');
+		$minutes = $this->fixValueForSymbol($symbolTypePresence, 'minutes', $dateTime, 'i');
+		$seconds = $this->fixValueForSymbol($symbolTypePresence, 'seconds', $dateTime, 's');
 
 		$dateTime->setTime($hours, $minutes, $seconds);
 		$dateTime->setDate($years, $months, $days);
@@ -87,17 +87,17 @@ class SimplePatternParsingFixer extends Object implements IDateTimeFixer
 
 
 	/**
-	 * @param $symbolName
+	 * @param bool[] $symbolTypePresence
+	 * @param string $symbolName
 	 * @param \DateTime $dateTime
-	 * @param $symbolTypePresence
-	 * @param $symbol
+	 * @param string $symbol
 	 * @param int $defaultValue
 	 * @return int
 	 */
 	protected function fixValueForSymbol(
+		array $symbolTypePresence,
 		$symbolName,
 		\DateTime $dateTime,
-		$symbolTypePresence,
 		$symbol,
 		$defaultValue = 0
 	) {
