@@ -2,11 +2,9 @@
 
 namespace Achse\DateTimeInput;
 
-use Nette\Object;
 
 
-
-class DateTimeInputFactory extends Object
+class DateTimeInputFactory
 {
 
 	/**

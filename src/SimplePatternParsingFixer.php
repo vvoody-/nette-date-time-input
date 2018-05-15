@@ -3,11 +3,10 @@
 namespace Achse\DateTimeInput;
 
 use Achse\DateTimeFormatTools\Tools;
-use Nette\Object;
 
 
 
-class SimplePatternParsingFixer extends Object implements IDateTimeFixer
+class SimplePatternParsingFixer implements IDateTimeFixer
 {
 
 	/**
